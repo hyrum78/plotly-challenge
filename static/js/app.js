@@ -2,9 +2,14 @@
 function grossDataWhy(id) {
   // getting data from the json file
   d3.json("samples.json").then((data)=> {
-                
+    // console.log(data)
+      
+      // var wfreq = data.metadata.map(d => d.wfreq)
+      // console.log(`Washing Freq: ${wfreq}`)
+
       // filter top 10 OTUs
-      var samples = data.samples.filter(s => s.id.toString() === id)[0];      
+      var samples = data.samples.filter(s => s.id.toString() === id)[0];
+      // console.log(samples);    
       var sampleVal = samples.sample_values.slice(0, 10).reverse();
       var Top_10 = (samples.otu_ids.slice(0, 10)).reverse();
       
@@ -19,10 +24,11 @@ function grossDataWhy(id) {
           x: sampleVal,
           y: Map_10,
           text: label_10,
-          marker: {
-            color: 'rgb(51,122,183)'},
           type:"bar",
           orientation: "h",
+          marker: {
+            color: 'rgb(51,122,183)'}
+          
       };
       var data1 = [trace1];
 
@@ -47,12 +53,13 @@ function grossDataWhy(id) {
       var trace2 = {
           x: samples.otu_ids,
           y: samples.sample_values,
+          text: samples.otu_labels,
           mode: "markers",
           marker: {
               size: samples.sample_values,
               color: samples.otu_ids
-          },
-          text: samples.otu_labels
+          }
+          
       };
 
       // layout
@@ -90,7 +97,7 @@ function moreGrossData(id) {
   });
 }
 // change event
-function changeEvent(id) {
+function optionChanged(id) {
   grossDataWhy(id);
   moreGrossData(id);
 }
